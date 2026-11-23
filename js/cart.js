@@ -50,6 +50,52 @@ if (cartList) {
   const cartTotal = document.querySelector('#cart-total');
   const cartEmpty = document.querySelector('#cart-empty');
   const catalogLink = document.querySelector('#cart-catalog-link');
+  const promoForm = document.querySelector('#cart-promo');
+  const promoInput = document.querySelector('#cart-promo-code');
+  const promoMessage = document.querySelector('#cart-promo-message');
+  const discountLine = document.querySelector('#cart-discount');
+  const discountValue = document.querySelector('#cart-discount-value');
+  const promoCode = 'SALE15';
+  const discountPercent = 15;
+  let subtotal = 0;
+  let promoApplied = false;
+
+  function updateCartTotal() {
+    const discount = promoApplied ? Math.round(subtotal * discountPercent) / 100 : 0;
+    discountLine.hidden = !promoApplied;
+    discountValue.textContent = formatPrice(discount);
+    cartTotal.textContent = formatPrice(subtotal - discount);
+  }
+
+  function clearPromoFeedback() {
+    promoInput.removeAttribute('aria-invalid');
+    promoInput.removeAttribute('aria-describedby');
+    promoMessage.textContent = '';
+  }
+
+  promoForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (promoForm.hidden) return;
+
+    const code = promoInput.value.trim().toUpperCase();
+    promoApplied = code === promoCode;
+    clearPromoFeedback();
+    if (promoApplied) {
+      promoMessage.textContent = 'Промокод применён.';
+    } else if (code) {
+      promoMessage.textContent = 'Промокод недействителен.';
+      promoInput.setAttribute('aria-invalid', 'true');
+      promoInput.setAttribute('aria-describedby', promoMessage.id);
+      promoInput.focus();
+    } else {
+      promoMessage.textContent = 'Введите промокод.';
+    }
+    updateCartTotal();
+  });
+
+  promoInput.addEventListener('input', () => {
+    if (promoInput.hasAttribute('aria-invalid')) clearPromoFeedback();
+  });
 
   function renderCart(ids) {
     const cartProducts = ids.map((id) => findProductById(products, id));
@@ -95,8 +141,14 @@ if (cartList) {
       cartList.append(item);
     });
 
-    const total = calculateTotalPrice(cartProducts);
-    cartTotal.textContent = formatPrice(total);
+    subtotal = calculateTotalPrice(cartProducts);
+    promoForm.hidden = cartProducts.length === 0;
+    if (promoForm.hidden) {
+      promoApplied = false;
+      promoForm.reset();
+      clearPromoFeedback();
+    }
+    updateCartTotal();
   }
 
   renderCart(readCart());

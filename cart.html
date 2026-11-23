@@ -43,9 +43,21 @@
       <h1 class="section__title">Корзина</h1>
       <p id="cart-empty">Корзина пуста.</p>
       <ul class="cart-items" id="cart-items" aria-label="Товары в корзине" hidden></ul>
+      <form class="cart-promo" id="cart-promo" hidden>
+        <label for="cart-promo-code">Промокод</label>
+        <div class="cart-promo__fields">
+          <input class="order-form__input" id="cart-promo-code" type="text" autocomplete="off" spellcheck="false">
+          <button class="button button--secondary" type="submit">Применить</button>
+        </div>
+        <p id="cart-promo-message" role="status"></p>
+      </form>
+      <p id="cart-discount" hidden>Скидка 15%: <strong id="cart-discount-value"></strong></p>
       <p>Итого: <strong id="cart-total">0 руб.</strong></p>
       <p id="cart-message" role="status"></p>
-      <a class="button button--primary" id="cart-catalog-link" href="catalog.html">Перейти в каталог</a>
+      <div class="cart-checkout">
+        <button class="button button--primary" type="button" disabled>Оплатить</button>
+        <a class="button button--secondary" id="cart-catalog-link" href="catalog.html">Перейти в каталог</a>
+      </div>
     </section>
   </main>
   <footer class="site-footer">
