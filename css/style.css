@@ -1475,7 +1475,3 @@ textarea::placeholder {
 .product-detail__visual .watch-gallery {
   border-radius: var(--radius-card);
 }
-
-.advantages__item:hover {
-  border-color: #fff;
-}
