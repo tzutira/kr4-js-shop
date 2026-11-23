@@ -64,6 +64,54 @@ const watchProducts = {
     color: "Белый",
     category: "Кварцевый механизм",
     badge: ""
+  },
+
+  "7": {
+    id: "7",
+    name: "Cartier с асимметричным корпусом",
+    brand: "Cartier",
+    description: "Асимметричный корпус, римские цифры, синие стрелки и браслет с рельефным орнаментом.",
+    price: "118 500 ₽",
+    color: "Серебристый",
+    category: "Ручной завод",
+    badge: "",
+    image: "images/archive-7-front.png"
+  },
+
+  "8": {
+    id: "8",
+    name: "Rolex Datejust",
+    brand: "Rolex",
+    description: "Чёрный циферблат с окном даты и массивный браслет с рельефными звеньями.",
+    price: "139 900 ₽",
+    color: "Чёрный",
+    category: "Автоматический механизм",
+    badge: "",
+    image: "images/archive-8-front.png"
+  },
+
+  "9": {
+    id: "9",
+    name: "Cartier с квадратным корпусом",
+    brand: "Cartier",
+    description: "Квадратный корпус, белый циферблат с римскими цифрами и коричневый ремешок.",
+    price: "79 500 ₽",
+    color: "Белый",
+    category: "Ручной завод",
+    badge: "",
+    image: "images/archive-9-front.png"
+  },
+
+  "10": {
+    id: "10",
+    name: "Sekonda с синим циферблатом",
+    brand: "Sekonda",
+    description: "Круглый синий циферблат с окном даты и серебристый браслет.",
+    price: "18 500 ₽",
+    color: "Синий",
+    category: "Кварцевый механизм",
+    badge: "",
+    image: "images/archive-10-front.png"
   }
 };
 
@@ -73,7 +121,8 @@ const products = Object.values(watchProducts).map((watch) => ({
   category: watch.category,
   price: Number(watch.price.replace(/\D/g, '')),
   isAvailable: true,
-  image: `images/archive-${watch.id}-front-640.png`,
+  image: watch.image || `images/archive-${watch.id}-front-640.png`,
+  hasGallery: !watch.image,
   description: watch.description
 }));
 

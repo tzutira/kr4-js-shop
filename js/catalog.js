@@ -46,13 +46,10 @@ function createProductCard(product) {
   card.classList.add('product-card');
 
   const gallery = catalogGallery.content.firstElementChild.cloneNode(true);
-  gallery.dataset.gallery = String(product.id);
-  gallery.setAttribute('aria-label', `Ракурсы ${product.title}`);
-  const image = gallery.querySelector('img');
-  image.src = product.image;
-  image.srcset = `${product.image.replace('-640.png', '-320.png')} 320w, ${product.image} 640w`;
-  image.alt = `${product.title} — вид спереди, студийная визуализация`;
-  initWatchGallery(gallery);
+  setWatchImage(gallery, product);
+  if (product.hasGallery) {
+    initWatchGallery(gallery);
+  }
 
   const title = document.createElement('h3');
   title.classList.add('product-card__title');

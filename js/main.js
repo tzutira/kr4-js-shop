@@ -11,13 +11,9 @@ if (productTitle) {
   price.classList.toggle('product-detail__price--discount', selectedWatch.badge === 'Скидка');
   document.getElementById('product-color').textContent = selectedWatch.color;
   document.getElementById('product-category').textContent = selectedWatch.category;
-  const image = document.getElementById('product-image');
-  image.src = `images/archive-${selectedWatch.id}-front-640.png`;
-  image.srcset = `images/archive-${selectedWatch.id}-front-320.png 320w, images/archive-${selectedWatch.id}-front-640.png 640w`;
-  image.closest("[data-gallery]").dataset.gallery = selectedWatch.id;
-  image.closest("[data-gallery]").setAttribute("aria-label", `Ракурсы ${selectedWatch.name}`);
+  const gallery = document.getElementById('product-image').closest('[data-gallery]');
+  setWatchImage(gallery, findProductById(products, Number(selectedWatch.id)));
   document.querySelectorAll("[data-spec]").forEach(el => el.textContent = selectedWatch[el.dataset.spec]);
-  image.alt = `${selectedWatch.name} — вид спереди, студийная визуализация`;
   document.getElementById('product-order-button').dataset.product = selectedWatch.name;
 }
 
@@ -160,6 +156,26 @@ if (menuButton && navigation) {
 // Ручные карусели: без таймера, жестов с блокировкой вертикальной прокрутки и скрытых ссылок.
 const angleNames = ['Спереди', 'Сбоку', 'Сзади'];
 const angleFiles = ['front', 'side', 'back'];
+function setWatchImage(gallery, product) {
+  const image = gallery.querySelector('img');
+  if (product.hasGallery) {
+    gallery.dataset.gallery = String(product.id);
+    gallery.setAttribute('aria-label', `Ракурсы ${product.title}`);
+    image.srcset = `${product.image.replace('-640.png', '-320.png')} 320w, ${product.image} 640w`;
+    image.alt = `${product.title} — вид спереди, студийная визуализация`;
+  } else {
+    gallery.removeAttribute('data-gallery');
+    gallery.removeAttribute('role');
+    gallery.removeAttribute('aria-roledescription');
+    gallery.removeAttribute('aria-label');
+    gallery.querySelector('.watch-gallery__controls').remove();
+    image.removeAttribute('srcset');
+    image.removeAttribute('sizes');
+    image.alt = `${product.title} — вид спереди`;
+  }
+  image.src = product.image;
+}
+
 function initWatchGallery(gallery) {
   const id = gallery.dataset.gallery;
   const image = gallery.querySelector('img');
