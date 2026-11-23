@@ -36,6 +36,16 @@ function addToCart(product) {
   }
 }
 
+if (cartMessage && !cartList) {
+  document.addEventListener('click', (event) => {
+    const button = event.target.closest('button[data-action="add-to-cart"]');
+    if (!button) return;
+
+    const product = findProductById(products, Number(button.dataset.productId));
+    if (product?.isAvailable) addToCart(product);
+  });
+}
+
 if (cartList) {
   const cartTotal = document.querySelector('#cart-total');
   const cartEmpty = document.querySelector('#cart-empty');
@@ -49,9 +59,28 @@ if (cartList) {
 
     cartProducts.forEach((product) => {
       const item = document.createElement('li');
+      item.classList.add('cart-item');
+
+      const photo = document.createElement('img');
+      photo.classList.add('cart-item__photo');
+      photo.src = product.image;
+      photo.width = 640;
+      photo.height = 640;
+      photo.alt = '';
+      photo.loading = 'lazy';
+
+      const description = document.createElement('div');
+      description.classList.add('cart-item__description');
       const title = document.createElement('a');
+      title.classList.add('cart-item__title');
       title.href = `product.html?product=${product.id}`;
       title.textContent = product.title;
+      const text = document.createElement('p');
+      text.textContent = product.description;
+      description.append(title, text);
+
+      const actions = document.createElement('div');
+      actions.classList.add('cart-item__actions');
       const price = document.createElement('span');
       price.textContent = formatPrice(product.price);
       const removeButton = document.createElement('button');
@@ -60,7 +89,8 @@ if (cartList) {
       removeButton.dataset.removeId = String(product.id);
       removeButton.textContent = 'Удалить';
       removeButton.setAttribute('aria-label', `Удалить ${product.title}`);
-      item.append(title, price, removeButton);
+      actions.append(price, removeButton);
+      item.append(photo, description, actions);
       cartList.append(item);
     });
 

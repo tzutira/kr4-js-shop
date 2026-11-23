@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="css/responsive.css">
   <script src="js/data.js" defer></script>
   <script src="js/main.js" defer></script>
+  <script src="js/cart.js" defer></script>
 </head>
 
 <body id="top">
@@ -94,6 +95,7 @@
 
     <section class="section" id="popular">
       <h2 class="section__title">Избранные модели</h2>
+      <p id="cart-message" role="status"></p>
       <div class="products-grid">
         <article class="product-card" data-product-id="1">
           <div class="watch-gallery" data-gallery="1" role="group" aria-roledescription="карусель"
@@ -128,12 +130,8 @@
           <p class="product-card__price">68 500 ₽</p>
 
           <div class="product-card__actions">
-            <a class="product-card__details" href="product.html?product=1">
-              Подробнее
-            </a>
-            <button class="button button--primary product-card__button" type="button" data-product="NOIR Archive 01">
-              Заказать
-            </button>
+            <button class="button button--primary product-card__button" type="button" data-action="add-to-cart"
+              data-product-id="1">В корзину</button>
           </div>
         </article>
 
@@ -170,12 +168,8 @@
           <p class="product-card__price">84 900 ₽</p>
 
           <div class="product-card__actions">
-            <a class="product-card__details" href="product.html?product=2">
-              Подробнее
-            </a>
-            <button class="button button--primary product-card__button" type="button" data-product="NOIR Archive 02">
-              Заказать
-            </button>
+            <button class="button button--primary product-card__button" type="button" data-action="add-to-cart"
+              data-product-id="2">В корзину</button>
           </div>
         </article>
 
@@ -212,12 +206,8 @@
           <p class="product-card__price">52 000 ₽</p>
 
           <div class="product-card__actions">
-            <a class="product-card__details" href="product.html?product=3">
-              Подробнее
-            </a>
-            <button class="button button--primary product-card__button" type="button" data-product="NOIR Archive 03">
-              Заказать
-            </button>
+            <button class="button button--primary product-card__button" type="button" data-action="add-to-cart"
+              data-product-id="3">В корзину</button>
           </div>
         </article>
 
@@ -254,12 +244,8 @@
           <p class="product-card__price">96 000 ₽</p>
 
           <div class="product-card__actions">
-            <a class="product-card__details" href="product.html?product=4">
-              Подробнее
-            </a>
-            <button class="button button--primary product-card__button" type="button" data-product="NOIR Archive 04">
-              Заказать
-            </button>
+            <button class="button button--primary product-card__button" type="button" data-action="add-to-cart"
+              data-product-id="4">В корзину</button>
           </div>
         </article>
 
@@ -296,12 +282,8 @@
           <p class="product-card__price">73 500 ₽</p>
 
           <div class="product-card__actions">
-            <a class="product-card__details" href="product.html?product=5">
-              Подробнее
-            </a>
-            <button class="button button--primary product-card__button" type="button" data-product="NOIR Archive 05">
-              Заказать
-            </button>
+            <button class="button button--primary product-card__button" type="button" data-action="add-to-cart"
+              data-product-id="5">В корзину</button>
           </div>
         </article>
 
@@ -338,12 +320,8 @@
           <p class="product-card__price">45 000 ₽</p>
 
           <div class="product-card__actions">
-            <a class="product-card__details" href="product.html?product=6">
-              Подробнее
-            </a>
-            <button class="button button--primary product-card__button" type="button" data-product="NOIR Archive 06">
-              Заказать
-            </button>
+            <button class="button button--primary product-card__button" type="button" data-action="add-to-cart"
+              data-product-id="6">В корзину</button>
           </div>
         </article>
       </div>
