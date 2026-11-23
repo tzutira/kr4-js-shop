@@ -1225,6 +1225,24 @@ textarea::placeholder {
   display: block;
 }
 
+.cart-items {
+  padding: 0;
+  list-style: none;
+}
+
+.cart-items li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding-block: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cart-items li a {
+  flex: 1 1 12rem;
+}
+
 .spec-cards {
   margin: 0;
 }

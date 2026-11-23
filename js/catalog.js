@@ -41,10 +41,6 @@ function getCatalogProducts(products, state) {
   return result;
 }
 
-function formatPrice(price) {
-  return `${price.toLocaleString('ru-RU')} руб.`;
-}
-
 function createProductCard(product) {
   const card = document.createElement('article');
   card.classList.add('product-card');
@@ -177,7 +173,9 @@ if (productsContainer) {
       return;
     }
 
-    console.log(`Товар добавлен в корзину: ${selectedProduct.title}`);
+    if (button.dataset.action === 'add-to-cart' && selectedProduct.isAvailable) {
+      addToCart(selectedProduct);
+    }
   });
 }
 

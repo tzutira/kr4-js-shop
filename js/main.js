@@ -249,6 +249,11 @@ console.table(sortProductsByPrice(practice16Products, 'desc'));
 function findProductById(products, id) {
   return products.find((product) => product.id === id);
 }
+
+function formatPrice(price) {
+  return `${price.toLocaleString('ru-RU')} руб.`;
+}
+
 const selectedProduct = findProductById(practice16Products, 3);
 if (selectedProduct) {
   console.log(`Найден товар: ${selectedProduct.title}`);
