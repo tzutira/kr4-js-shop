@@ -74,8 +74,7 @@ const watchProducts = {
     price: "118 500 ₽",
     color: "Серебристый",
     category: "Ручной завод",
-    badge: "",
-    image: "images/archive-7-front.png"
+    badge: ""
   },
 
   "8": {
@@ -86,8 +85,7 @@ const watchProducts = {
     price: "139 900 ₽",
     color: "Чёрный",
     category: "Автоматический механизм",
-    badge: "",
-    image: "images/archive-8-front.png"
+    badge: ""
   },
 
   "9": {
@@ -98,8 +96,7 @@ const watchProducts = {
     price: "79 500 ₽",
     color: "Белый",
     category: "Ручной завод",
-    badge: "",
-    image: "images/archive-9-front.png"
+    badge: ""
   },
 
   "10": {
@@ -110,8 +107,7 @@ const watchProducts = {
     price: "18 500 ₽",
     color: "Синий",
     category: "Кварцевый механизм",
-    badge: "",
-    image: "images/archive-10-front.png"
+    badge: ""
   }
 };
 
@@ -121,8 +117,7 @@ const products = Object.values(watchProducts).map((watch) => ({
   category: watch.category,
   price: Number(watch.price.replace(/\D/g, '')),
   isAvailable: true,
-  image: watch.image || `images/archive-${watch.id}-front-640.png`,
-  hasGallery: !watch.image,
+  image: `images/archive-${watch.id}-front-640.png`,
   description: watch.description
 }));
 

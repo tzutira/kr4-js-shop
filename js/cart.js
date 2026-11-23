@@ -63,11 +63,12 @@ if (cartList) {
 
       const photo = document.createElement('img');
       photo.classList.add('cart-item__photo');
-      photo.src = product.image;
       photo.width = 640;
       photo.height = 640;
       photo.alt = '';
       photo.loading = 'lazy';
+      photo.sizes = '(min-width: 48rem) 240px, 25vw';
+      setWatchImageSource(photo, product.image);
 
       const description = document.createElement('div');
       description.classList.add('cart-item__description');

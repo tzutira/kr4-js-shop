@@ -156,24 +156,17 @@ if (menuButton && navigation) {
 // Ручные карусели: без таймера, жестов с блокировкой вертикальной прокрутки и скрытых ссылок.
 const angleNames = ['Спереди', 'Сбоку', 'Сзади'];
 const angleFiles = ['front', 'side', 'back'];
+function setWatchImageSource(image, src) {
+  image.srcset = `${src.replace('-640.png', '-320.png')} 320w, ${src} 640w`;
+  image.src = src;
+}
+
 function setWatchImage(gallery, product) {
+  gallery.dataset.gallery = String(product.id);
+  gallery.setAttribute('aria-label', `Ракурсы ${product.title}`);
   const image = gallery.querySelector('img');
-  if (product.hasGallery) {
-    gallery.dataset.gallery = String(product.id);
-    gallery.setAttribute('aria-label', `Ракурсы ${product.title}`);
-    image.srcset = `${product.image.replace('-640.png', '-320.png')} 320w, ${product.image} 640w`;
-    image.alt = `${product.title} — вид спереди, студийная визуализация`;
-  } else {
-    gallery.removeAttribute('data-gallery');
-    gallery.removeAttribute('role');
-    gallery.removeAttribute('aria-roledescription');
-    gallery.removeAttribute('aria-label');
-    gallery.querySelector('.watch-gallery__controls').remove();
-    image.removeAttribute('srcset');
-    image.removeAttribute('sizes');
-    image.alt = `${product.title} — вид спереди`;
-  }
-  image.src = product.image;
+  image.alt = `${product.title} — вид спереди, студийная визуализация`;
+  setWatchImageSource(image, product.image);
 }
 
 function initWatchGallery(gallery) {
@@ -182,9 +175,7 @@ function initWatchGallery(gallery) {
   let index = 0;
   function show(next) {
     index = (next + 3) % 3;
-    const base = `images/archive-${id}-${angleFiles[index]}`;
-    image.src = `${base}-640.png`;
-    image.srcset = `${base}-320.png 320w, ${base}-640.png 640w`;
+    setWatchImageSource(image, `images/archive-${id}-${angleFiles[index]}-640.png`);
     image.alt = `${watchProducts[id].name} — вид ${angleNames[index].toLowerCase()}, студийная визуализация`;
     gallery.querySelector('.watch-gallery__status').textContent = `${angleNames[index]} · ${index + 1} / 3`;
   }

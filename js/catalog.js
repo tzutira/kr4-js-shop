@@ -47,9 +47,7 @@ function createProductCard(product) {
 
   const gallery = catalogGallery.content.firstElementChild.cloneNode(true);
   setWatchImage(gallery, product);
-  if (product.hasGallery) {
-    initWatchGallery(gallery);
-  }
+  initWatchGallery(gallery);
 
   const title = document.createElement('h3');
   title.classList.add('product-card__title');
