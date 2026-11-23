@@ -68,26 +68,26 @@ const products = {
 };
 
 const params = new URLSearchParams(window.location.search);
-const product = products[params.get('product')] || products['1'];
+const selectedProduct = products[params.get('product')] || products['1'];
 const productTitle = document.getElementById('product-title');
 if (productTitle) {
-  productTitle.textContent = product.name;
-  document.title = `${product.name} — NOIR`;
-  document.getElementById('product-breadcrumb').textContent = product.name;
-  document.getElementById('product-description').textContent = product.description;
+  productTitle.textContent = selectedProduct.name;
+  document.title = `${selectedProduct.name} — NOIR`;
+  document.getElementById('product-breadcrumb').textContent = selectedProduct.name;
+  document.getElementById('product-description').textContent = selectedProduct.description;
   const price = document.getElementById('product-price');
-  price.textContent = product.price;
-  price.classList.toggle('product-detail__price--discount', product.badge === 'Скидка');
-  document.getElementById('product-color').textContent = product.color;
-  document.getElementById('product-category').textContent = product.category;
+  price.textContent = selectedProduct.price;
+  price.classList.toggle('product-detail__price--discount', selectedProduct.badge === 'Скидка');
+  document.getElementById('product-color').textContent = selectedProduct.color;
+  document.getElementById('product-category').textContent = selectedProduct.category;
   const image = document.getElementById('product-image');
-  image.src = `images/archive-${product.id}-front-640.png`;
-  image.srcset = `images/archive-${product.id}-front-320.png 320w, images/archive-${product.id}-front-640.png 640w`;
-  image.closest("[data-gallery]").dataset.gallery = product.id;
-  image.closest("[data-gallery]").setAttribute("aria-label", `Ракурсы ${product.name}`);
-  document.querySelectorAll("[data-spec]").forEach(el => el.textContent = product[el.dataset.spec]);
-  image.alt = `${product.name} — вид спереди, студийная визуализация`;
-  document.getElementById('product-order-button').dataset.product = product.name;
+  image.src = `images/archive-${selectedProduct.id}-front-640.png`;
+  image.srcset = `images/archive-${selectedProduct.id}-front-320.png 320w, images/archive-${selectedProduct.id}-front-640.png 640w`;
+  image.closest("[data-gallery]").dataset.gallery = selectedProduct.id;
+  image.closest("[data-gallery]").setAttribute("aria-label", `Ракурсы ${selectedProduct.name}`);
+  document.querySelectorAll("[data-spec]").forEach(el => el.textContent = selectedProduct[el.dataset.spec]);
+  image.alt = `${selectedProduct.name} — вид спереди, студийная визуализация`;
+  document.getElementById('product-order-button').dataset.product = selectedProduct.name;
 }
 
 const orderDialog = document.getElementById('order-dialog');
@@ -145,7 +145,7 @@ document.getElementById('close-order-dialog')?.addEventListener('click', () => o
 
 // На отдельной странице заявки выбранный товар берётся из адреса.
 if (orderForm && !orderDialog && products[params.get('product')]) {
-  selectedProductInput.value = product.name;
+  selectedProductInput.value = selectedProduct.name;
   orderTopicSelect.value = 'product';
 }
 selectedProductInput?.addEventListener('change', () => {
@@ -311,3 +311,50 @@ if (filters) {
 }
 
 document.documentElement.classList.add("js-ready");
+
+console.log('Файл main.js подключён');
+console.log(product);
+console.table(product);
+
+function formatPrice(price) {
+  return `${price} руб.`;
+}
+console.log(formatPrice(product.price));
+
+function calculateDiscount(price, discountPercent) {
+  return price * discountPercent / 100;
+}
+const discountValue = calculateDiscount(product.price, product.discountPercent);
+console.log(discountValue);
+
+function calculateFinalPrice(price, discountPercent) {
+  const discountValue = calculateDiscount(price, discountPercent);
+  return price - discountValue;
+}
+const finalPrice = calculateFinalPrice(product.price, product.discountPercent);
+console.log(finalPrice);
+
+function getProductStatus(product) {
+  if (product.isAvailable) {
+    return 'В наличии';
+  }
+  return 'Нет в наличии';
+}
+console.log(getProductStatus(product));
+
+function createProductSummary(product) {
+  const finalPrice = calculateFinalPrice(product.price, product.discountPercent);
+  const status = getProductStatus(product);
+  return `${product.title}: ${formatPrice(finalPrice)}. Статус: ${status}.`;
+}
+const productSummary = createProductSummary(product);
+console.log(productSummary);
+
+const messageElement = document.querySelector('.js-message');
+const productOutputElement = document.querySelector('.product-output');
+if (messageElement) {
+  messageElement.textContent = 'JavaScript подключён корректно.';
+}
+if (productOutputElement) {
+  productOutputElement.textContent = productSummary;
+}
