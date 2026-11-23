@@ -1,5 +1,5 @@
 // набор данных связывает каталог, страницу товара и форму заявки
-const products = {
+const watchProducts = {
   "1": {
     id: "1",
     name: "NOIR Archive 01",
@@ -68,26 +68,26 @@ const products = {
 };
 
 const params = new URLSearchParams(window.location.search);
-const selectedProduct = products[params.get('product')] || products['1'];
+const selectedWatch = watchProducts[params.get('product')] || watchProducts['1'];
 const productTitle = document.getElementById('product-title');
 if (productTitle) {
-  productTitle.textContent = selectedProduct.name;
-  document.title = `${selectedProduct.name} — NOIR`;
-  document.getElementById('product-breadcrumb').textContent = selectedProduct.name;
-  document.getElementById('product-description').textContent = selectedProduct.description;
+  productTitle.textContent = selectedWatch.name;
+  document.title = `${selectedWatch.name} — NOIR`;
+  document.getElementById('product-breadcrumb').textContent = selectedWatch.name;
+  document.getElementById('product-description').textContent = selectedWatch.description;
   const price = document.getElementById('product-price');
-  price.textContent = selectedProduct.price;
-  price.classList.toggle('product-detail__price--discount', selectedProduct.badge === 'Скидка');
-  document.getElementById('product-color').textContent = selectedProduct.color;
-  document.getElementById('product-category').textContent = selectedProduct.category;
+  price.textContent = selectedWatch.price;
+  price.classList.toggle('product-detail__price--discount', selectedWatch.badge === 'Скидка');
+  document.getElementById('product-color').textContent = selectedWatch.color;
+  document.getElementById('product-category').textContent = selectedWatch.category;
   const image = document.getElementById('product-image');
-  image.src = `images/archive-${selectedProduct.id}-front-640.png`;
-  image.srcset = `images/archive-${selectedProduct.id}-front-320.png 320w, images/archive-${selectedProduct.id}-front-640.png 640w`;
-  image.closest("[data-gallery]").dataset.gallery = selectedProduct.id;
-  image.closest("[data-gallery]").setAttribute("aria-label", `Ракурсы ${selectedProduct.name}`);
-  document.querySelectorAll("[data-spec]").forEach(el => el.textContent = selectedProduct[el.dataset.spec]);
-  image.alt = `${selectedProduct.name} — вид спереди, студийная визуализация`;
-  document.getElementById('product-order-button').dataset.product = selectedProduct.name;
+  image.src = `images/archive-${selectedWatch.id}-front-640.png`;
+  image.srcset = `images/archive-${selectedWatch.id}-front-320.png 320w, images/archive-${selectedWatch.id}-front-640.png 640w`;
+  image.closest("[data-gallery]").dataset.gallery = selectedWatch.id;
+  image.closest("[data-gallery]").setAttribute("aria-label", `Ракурсы ${selectedWatch.name}`);
+  document.querySelectorAll("[data-spec]").forEach(el => el.textContent = selectedWatch[el.dataset.spec]);
+  image.alt = `${selectedWatch.name} — вид спереди, студийная визуализация`;
+  document.getElementById('product-order-button').dataset.product = selectedWatch.name;
 }
 
 const orderDialog = document.getElementById('order-dialog');
@@ -144,12 +144,12 @@ document.getElementById('open-order-dialog')?.addEventListener('click', () => op
 document.getElementById('close-order-dialog')?.addEventListener('click', () => orderDialog.close());
 
 // На отдельной странице заявки выбранный товар берётся из адреса.
-if (orderForm && !orderDialog && products[params.get('product')]) {
-  selectedProductInput.value = selectedProduct.name;
+if (orderForm && !orderDialog && watchProducts[params.get('product')]) {
+  selectedProductInput.value = selectedWatch.name;
   orderTopicSelect.value = 'product';
 }
 selectedProductInput?.addEventListener('change', () => {
-  const chosenProduct = Object.values(products).find((item) => item.name === selectedProductInput.value);
+  const chosenProduct = Object.values(watchProducts).find((item) => item.name === selectedProductInput.value);
   orderTopicSelect.value = chosenProduct ? 'product' : 'consultation';
 });
 function getFieldErrorClass(field) {
@@ -236,7 +236,7 @@ document.querySelectorAll('[data-gallery]').forEach(gallery => {
     const base = `images/archive-${id}-${angleFiles[index]}`;
     image.src = `${base}-640.png`;
     image.srcset = `${base}-320.png 320w, ${base}-640.png 640w`;
-    image.alt = `${products[id].name} — вид ${angleNames[index].toLowerCase()}, студийная визуализация`;
+    image.alt = `${watchProducts[id].name} — вид ${angleNames[index].toLowerCase()}, студийная визуализация`;
     gallery.querySelector('.watch-gallery__status').textContent = `${angleNames[index]} · ${index + 1} / 3`;
   }
   gallery.querySelectorAll('[data-step]').forEach(button => button.addEventListener('click', () => show(index + Number(button.dataset.step))));
@@ -280,13 +280,13 @@ if (filters) {
     const query = search.value.trim().toLocaleLowerCase('ru');
     let count = 0;
     cards.sort((a, b) => {
-      const first = products[a.dataset.productId], second = products[b.dataset.productId];
+      const first = watchProducts[a.dataset.productId], second = watchProducts[b.dataset.productId];
       if (sorting.value === 'asc') return cost(first) - cost(second);
       if (sorting.value === 'desc') return cost(second) - cost(first);
       if (sorting.value === 'name') return first.name.localeCompare(second.name, 'ru');
       return Number(first.id) - Number(second.id);
     }).forEach(card => {
-      const item = products[card.dataset.productId];
+      const item = watchProducts[card.dataset.productId];
       card.hidden = !((!selected.length || selected.includes(item.category)) &&
         (!min.value || cost(item) >= Number(min.value)) && (!max.value || cost(item) <= Number(max.value)) &&
         `${item.name} ${item.color} ${item.description}`.toLocaleLowerCase('ru').includes(query));
@@ -313,48 +313,110 @@ if (filters) {
 document.documentElement.classList.add("js-ready");
 
 console.log('Файл main.js подключён');
-console.log(product);
-console.table(product);
+console.log(products);
+console.table(products);
 
-function formatPrice(price) {
-  return `${price} руб.`;
+function getProductTitles(products) {
+  return products.map((product) => product.title);
 }
-console.log(formatPrice(product.price));
+const productTitles = getProductTitles(products);
+console.log(productTitles);
 
-function calculateDiscount(price, discountPercent) {
-  return price * discountPercent / 100;
+function getAvailableProducts(products) {
+  return products.filter((product) => product.isAvailable);
 }
-const discountValue = calculateDiscount(product.price, product.discountPercent);
-console.log(discountValue);
+const availableProducts = getAvailableProducts(products);
+console.table(availableProducts);
 
-function calculateFinalPrice(price, discountPercent) {
-  const discountValue = calculateDiscount(price, discountPercent);
-  return price - discountValue;
-}
-const finalPrice = calculateFinalPrice(product.price, product.discountPercent);
-console.log(finalPrice);
-
-function getProductStatus(product) {
-  if (product.isAvailable) {
-    return 'В наличии';
+function searchProducts(products, query) {
+  const normalizedQuery = query.trim().toLowerCase();
+  if (normalizedQuery === '') {
+    return products;
   }
-  return 'Нет в наличии';
+  return products.filter((product) => {
+    return product.title.toLowerCase().includes(normalizedQuery);
+  });
 }
-console.log(getProductStatus(product));
+const searchResult = searchProducts(products, 'кофе');
+console.table(searchResult);
 
-function createProductSummary(product) {
-  const finalPrice = calculateFinalPrice(product.price, product.discountPercent);
-  const status = getProductStatus(product);
-  return `${product.title}: ${formatPrice(finalPrice)} · ${status}`;
+function filterProductsByCategory(products, category) {
+  if (category === 'all') {
+    return products;
+  }
+  return products.filter((product) => {
+    return product.category === category;
+  });
 }
-const productSummary = createProductSummary(product);
-console.log(productSummary);
+const kitchenProducts = filterProductsByCategory(products, 'kitchen');
+console.table(kitchenProducts);
+
+function sortProductsByPrice(products, direction = 'asc') {
+  const productsCopy = [...products];
+  if (direction === 'desc') {
+    return productsCopy.sort((a, b) => b.price - a.price);
+  }
+  return productsCopy.sort((a, b) => a.price - b.price);
+}
+const productsSortedByPrice = sortProductsByPrice(products, 'asc');
+console.table(productsSortedByPrice);
+
+console.table(sortProductsByPrice(products, 'desc'));
+
+function findProductById(products, id) {
+  return products.find((product) => product.id === id);
+}
+const selectedProduct = findProductById(products, 3);
+if (selectedProduct) {
+  console.log(`Найден товар: ${selectedProduct.title}`);
+} else {
+  console.log('Товар не найден');
+}
+
+function calculateTotalPrice(products) {
+  return products.reduce((sum, product) => {
+    return sum + product.price;
+  }, 0);
+}
+const totalPrice = calculateTotalPrice(products);
+console.log(totalPrice);
+
+function countAvailableProducts(products) {
+  return products.filter((product) => product.isAvailable).length;
+}
+const availableCount = countAvailableProducts(products);
+console.log(availableCount);
+
+function calculateAveragePrice(products) {
+  if (products.length === 0) {
+    return 0;
+  }
+  const totalPrice = calculateTotalPrice(products);
+  return Math.round(totalPrice / products.length);
+}
+const averagePrice = calculateAveragePrice(products);
+console.log(averagePrice);
+
+function getPreparedProducts(products, query, category, sortDirection) {
+  let result = [...products];
+  result = searchProducts(result, query);
+  result = filterProductsByCategory(result, category);
+  result = sortProductsByPrice(result, sortDirection);
+  return result;
+}
+const preparedProducts = getPreparedProducts(products, 'ко', 'kitchen', 'asc');
+console.table(preparedProducts);
 
 const messageElement = document.querySelector('.js-message');
 const productOutputElement = document.querySelector('.product-output');
 if (messageElement) {
-  messageElement.textContent = 'Итоговая цена с учебной скидкой:';
+  messageElement.textContent = 'Массив товаров и функции обработки данных подключены.';
 }
 if (productOutputElement) {
-  productOutputElement.textContent = productSummary;
+  productOutputElement.textContent = [
+    `Всего товаров: ${products.length}`,
+    `Товаров в наличии: ${countAvailableProducts(products)}`,
+    `Средняя цена: ${calculateAveragePrice(products)} руб.`,
+    `Результатов поиска "ко": ${searchProducts(products, 'ко').length}`
+  ].join('\n');
 }
