@@ -98,11 +98,11 @@ function getErrorMessage(field) {
   if (field.validity.tooShort) return `Введите не менее ${field.minLength} символов.`;
   return field.validationMessage;
 }
-function showFieldError(field) {
+function showFieldError(field, message = getErrorMessage(field)) {
   field.setAttribute('aria-invalid', 'true');
   field.classList.add(getFieldErrorClass(field));
   const error = document.getElementById(`${field.id}-error`);
-  if (error) { error.textContent = getErrorMessage(field); error.hidden = false; }
+  if (error) { error.textContent = message; error.hidden = false; }
 }
 function updateFieldError(event) {
   const field = event.target;
@@ -110,23 +110,25 @@ function updateFieldError(event) {
   if (field.validity.valid) clearFieldError(field);
   else showFieldError(field);
 }
-orderForm?.addEventListener('input', updateFieldError);
-orderForm?.addEventListener('change', updateFieldError);
-orderForm?.addEventListener('submit', (event) => {
-  event.preventDefault();
-  successMessage.hidden = true;
-  clearErrors();
-  const invalidFields = Array.from(orderForm.elements).filter((field) => field.willValidate && !field.validity.valid);
-  if (invalidFields.length) {
-    invalidFields.forEach(showFieldError);
-    invalidFields[0].focus();
-    return;
-  }
-  successMessage.hidden = false;
-  orderForm.reset();
-  if (orderDialog) orderDialog.close();
-  else successMessage.focus();
-});
+if (orderForm && !orderForm.querySelector('.form-message')) {
+  orderForm.addEventListener('input', updateFieldError);
+  orderForm.addEventListener('change', updateFieldError);
+  orderForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    successMessage.hidden = true;
+    clearErrors();
+    const invalidFields = Array.from(orderForm.elements).filter((field) => field.willValidate && !field.validity.valid);
+    if (invalidFields.length) {
+      invalidFields.forEach((field) => showFieldError(field));
+      invalidFields[0].focus();
+      return;
+    }
+    successMessage.hidden = false;
+    orderForm.reset();
+    if (orderDialog) orderDialog.close();
+    else successMessage.focus();
+  });
+}
 
 // Меню остаётся обычной навигацией без JS; на телефоне работает как disclosure.
 const menuButton = document.querySelector('.menu-toggle');
