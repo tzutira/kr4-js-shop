@@ -1,72 +1,3 @@
-// набор данных связывает каталог, страницу товара и форму заявки
-const watchProducts = {
-  "1": {
-    id: "1",
-    name: "NOIR Archive 01",
-    brand: "NOIR",
-    description: "Чёрный циферблат, стальной корпус и сдержанная винтажная эстетика.",
-    price: "68 500 ₽",
-    color: "Чёрный",
-    category: "Ручной завод",
-    badge: ""
-  },
-
-  "2": {
-    id: "2",
-    name: "NOIR Archive 02",
-    brand: "NOIR",
-    description: "Открытый механизм, серебристый корпус и чёрный кожаный ремешок.",
-    price: "84 900 ₽",
-    color: "Серебристый",
-    category: "Автоматический механизм",
-    badge: ""
-  },
-
-  "3": {
-    id: "3",
-    name: "NOIR Archive 03",
-    brand: "NOIR",
-    description: "Прямоугольный корпус, светлый циферблат и римские цифры.",
-    price: "52 000 ₽",
-    color: "Белый",
-    category: "Кварцевый механизм",
-    badge: ""
-  },
-
-  "4": {
-    id: "4",
-    name: "NOIR Archive 04",
-    brand: "NOIR",
-    description: "Тёмный циферблат и выразительный силуэт стального корпуса.",
-    price: "96 000 ₽",
-    color: "Чёрный",
-    category: "Автоматический механизм",
-    badge: ""
-  },
-
-  "5": {
-    id: "5",
-    name: "NOIR Archive 05",
-    brand: "NOIR",
-    description: "Скелетонизированный циферблат и серебристая архитектура механизма.",
-    price: "73 500 ₽",
-    color: "Серебристый",
-    category: "Ручной завод",
-    badge: ""
-  },
-
-  "6": {
-    id: "6",
-    name: "NOIR Archive 06",
-    brand: "NOIR",
-    description: "Минималистичный циферблат и спокойный повседневный характер.",
-    price: "45 000 ₽",
-    color: "Белый",
-    category: "Кварцевый механизм",
-    badge: ""
-  }
-};
-
 const params = new URLSearchParams(window.location.search);
 const selectedWatch = watchProducts[params.get('product')] || watchProducts['1'];
 const productTitle = document.getElementById('product-title');
@@ -227,7 +158,7 @@ if (menuButton && navigation) {
 // Ручные карусели: без таймера, жестов с блокировкой вертикальной прокрутки и скрытых ссылок.
 const angleNames = ['Спереди', 'Сбоку', 'Сзади'];
 const angleFiles = ['front', 'side', 'back'];
-document.querySelectorAll('[data-gallery]').forEach(gallery => {
+function initWatchGallery(gallery) {
   const id = gallery.dataset.gallery;
   const image = gallery.querySelector('img');
   let index = 0;
@@ -257,75 +188,25 @@ document.querySelectorAll('[data-gallery]').forEach(gallery => {
     start = null;
   });
   gallery.addEventListener('pointercancel', () => { start = null; });
-});
-
-const filters = document.querySelector('.catalog-filters__form');
-if (filters) {
-  const grid = document.querySelector('.catalog-layout .products-grid');
-  const cards = [...grid.querySelectorAll('[data-product-id]')];
-  const search = document.getElementById('catalog-search');
-  const sorting = document.getElementById('catalog-sort');
-  const mechanisms = { manual: 'Ручной завод', automatic: 'Автоматический механизм', quartz: 'Кварцевый механизм' };
-  const cost = item => Number(item.price.replace(/\D/g, ''));
-  function applyFilters() {
-    const selected = [...filters.querySelectorAll('[name="mechanism"]:checked')].map(el => mechanisms[el.value]);
-    const min = filters.elements['price-from'];
-    const max = filters.elements['price-to'];
-    max.setCustomValidity('');
-    if (!filters.reportValidity()) return;
-    if (min.value && max.value && Number(min.value) > Number(max.value)) {
-      max.setCustomValidity('Верхняя граница должна быть не меньше нижней.');
-      max.reportValidity(); return;
-    }
-    const query = search.value.trim().toLocaleLowerCase('ru');
-    let count = 0;
-    cards.sort((a, b) => {
-      const first = watchProducts[a.dataset.productId], second = watchProducts[b.dataset.productId];
-      if (sorting.value === 'asc') return cost(first) - cost(second);
-      if (sorting.value === 'desc') return cost(second) - cost(first);
-      if (sorting.value === 'name') return first.name.localeCompare(second.name, 'ru');
-      return Number(first.id) - Number(second.id);
-    }).forEach(card => {
-      const item = watchProducts[card.dataset.productId];
-      card.hidden = !((!selected.length || selected.includes(item.category)) &&
-        (!min.value || cost(item) >= Number(min.value)) && (!max.value || cost(item) <= Number(max.value)) &&
-        `${item.name} ${item.color} ${item.description}`.toLocaleLowerCase('ru').includes(query));
-      if (!card.hidden) count++;
-      grid.append(card);
-    });
-    document.getElementById('catalog-count').textContent = `Найдено моделей: ${count}`;
-    document.getElementById('catalog-empty').hidden = count !== 0;
-  }
-  filters.addEventListener('submit', event => { event.preventDefault(); applyFilters(); });
-  filters.addEventListener('input', () => filters.elements['price-to'].setCustomValidity(''));
-  search.addEventListener('input', applyFilters);
-  sorting.addEventListener('change', applyFilters);
-  filters.addEventListener('reset', () => {
-    search.value = ''; sorting.value = 'default';
-    filters.elements['price-to'].setCustomValidity('');
-    // Сброс нативных полей завершается после события reset.
-    setTimeout(applyFilters, 0);
-  });
-  const filterDetails = document.querySelector('.filter-disclosure');
-  filterDetails.open = matchMedia('(min-width: 1024px)').matches;
 }
+document.querySelectorAll('[data-gallery]').forEach(initWatchGallery);
 
 document.documentElement.classList.add("js-ready");
 
 console.log('Файл main.js подключён');
-console.log(products);
-console.table(products);
+console.log(practice16Products);
+console.table(practice16Products);
 
 function getProductTitles(products) {
   return products.map((product) => product.title);
 }
-const productTitles = getProductTitles(products);
+const productTitles = getProductTitles(practice16Products);
 console.log(productTitles);
 
 function getAvailableProducts(products) {
   return products.filter((product) => product.isAvailable);
 }
-const availableProducts = getAvailableProducts(products);
+const availableProducts = getAvailableProducts(practice16Products);
 console.table(availableProducts);
 
 function searchProducts(products, query) {
@@ -337,7 +218,7 @@ function searchProducts(products, query) {
     return product.title.toLowerCase().includes(normalizedQuery);
   });
 }
-const searchResult = searchProducts(products, 'кофе');
+const searchResult = searchProducts(practice16Products, 'кофе');
 console.table(searchResult);
 
 function filterProductsByCategory(products, category) {
@@ -348,7 +229,7 @@ function filterProductsByCategory(products, category) {
     return product.category === category;
   });
 }
-const kitchenProducts = filterProductsByCategory(products, 'kitchen');
+const kitchenProducts = filterProductsByCategory(practice16Products, 'kitchen');
 console.table(kitchenProducts);
 
 function sortProductsByPrice(products, direction = 'asc') {
@@ -358,15 +239,15 @@ function sortProductsByPrice(products, direction = 'asc') {
   }
   return productsCopy.sort((a, b) => a.price - b.price);
 }
-const productsSortedByPrice = sortProductsByPrice(products, 'asc');
+const productsSortedByPrice = sortProductsByPrice(practice16Products, 'asc');
 console.table(productsSortedByPrice);
 
-console.table(sortProductsByPrice(products, 'desc'));
+console.table(sortProductsByPrice(practice16Products, 'desc'));
 
 function findProductById(products, id) {
   return products.find((product) => product.id === id);
 }
-const selectedProduct = findProductById(products, 3);
+const selectedProduct = findProductById(practice16Products, 3);
 if (selectedProduct) {
   console.log(`Найден товар: ${selectedProduct.title}`);
 } else {
@@ -378,13 +259,13 @@ function calculateTotalPrice(products) {
     return sum + product.price;
   }, 0);
 }
-const totalPrice = calculateTotalPrice(products);
+const totalPrice = calculateTotalPrice(practice16Products);
 console.log(totalPrice);
 
 function countAvailableProducts(products) {
   return products.filter((product) => product.isAvailable).length;
 }
-const availableCount = countAvailableProducts(products);
+const availableCount = countAvailableProducts(practice16Products);
 console.log(availableCount);
 
 function calculateAveragePrice(products) {
@@ -394,7 +275,7 @@ function calculateAveragePrice(products) {
   const totalPrice = calculateTotalPrice(products);
   return Math.round(totalPrice / products.length);
 }
-const averagePrice = calculateAveragePrice(products);
+const averagePrice = calculateAveragePrice(practice16Products);
 console.log(averagePrice);
 
 function getPreparedProducts(products, query, category, sortDirection) {
@@ -404,7 +285,7 @@ function getPreparedProducts(products, query, category, sortDirection) {
   result = sortProductsByPrice(result, sortDirection);
   return result;
 }
-const preparedProducts = getPreparedProducts(products, 'ко', 'kitchen', 'asc');
+const preparedProducts = getPreparedProducts(practice16Products, 'ко', 'kitchen', 'asc');
 console.table(preparedProducts);
 
 const messageElement = document.querySelector('.js-message');
@@ -414,9 +295,9 @@ if (messageElement) {
 }
 if (productOutputElement) {
   productOutputElement.textContent = [
-    `Всего товаров: ${products.length}`,
-    `Товаров в наличии: ${countAvailableProducts(products)}`,
-    `Средняя цена: ${calculateAveragePrice(products)} руб.`,
-    `Результатов поиска "ко": ${searchProducts(products, 'ко').length}`
+    `Всего товаров: ${practice16Products.length}`,
+    `Товаров в наличии: ${countAvailableProducts(practice16Products)}`,
+    `Средняя цена: ${calculateAveragePrice(practice16Products)} руб.`,
+    `Результатов поиска "ко": ${searchProducts(practice16Products, 'ко').length}`
   ].join('\n');
 }

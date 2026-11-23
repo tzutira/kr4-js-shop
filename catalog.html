@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="css/responsive.css">
   <script src="js/data.js" defer></script>
   <script src="js/main.js" defer></script>
+  <script src="js/catalog.js" defer></script>
 </head>
 
 <body id="top">
@@ -51,316 +52,61 @@
       <aside class="catalog-filters">
         <details class="filter-disclosure" open>
           <summary>Подобрать часы <span aria-hidden="true">＋</span></summary>
-          <h2 class="catalog-filters__title">Фильтры</h2><label for="catalog-search">Найти модель</label><input
-            class="catalog-filters__input" id="catalog-search" type="search" placeholder="Название или цвет">
+          <h2 class="catalog-filters__title">Фильтры</h2>
+          <label for="catalog-search">Найти модель</label>
+          <input class="catalog-filters__input" id="catalog-search" type="search"
+            placeholder="Введите название товара" autocomplete="off">
 
-          <form class="catalog-filters__form" action="#" method="get">
-            <fieldset class="catalog-filters__group">
-              <legend class="catalog-filters__legend">Механизм</legend>
-
-              <label class="catalog-filters__label">
-                <input class="catalog-filters__checkbox" type="checkbox" name="mechanism" value="manual">
-                Ручной завод
-              </label>
-
-              <label class="catalog-filters__label">
-                <input class="catalog-filters__checkbox" type="checkbox" name="mechanism" value="automatic">
-                Автоматический
-              </label>
-
-              <label class="catalog-filters__label">
-                <input class="catalog-filters__checkbox" type="checkbox" name="mechanism" value="quartz">
-                Кварцевый
-              </label>
-            </fieldset>
-
-            <fieldset class="catalog-filters__group">
-              <legend class="catalog-filters__legend">Цена</legend>
-
-              <label class="catalog-filters__label" for="price-from">От</label>
-              <input class="catalog-filters__input" id="price-from" name="price-from" type="number" min="0"
-                placeholder="0">
-
-              <label class="catalog-filters__label" for="price-to">До</label>
-              <input class="catalog-filters__input" id="price-to" name="price-to" type="number" min="0"
-                placeholder="100000">
-            </fieldset>
-
-            <p class="order-form__hint">Выберите механизм и диапазон цены. Пустые поля не ограничивают поиск.</p>
-            <button class="button button--primary" type="submit">Применить</button>
-            <button class="button button--secondary" type="reset">Сбросить</button>
-          </form>
+          <label for="category-filter">Категория</label>
+          <select class="catalog-filters__input" id="category-filter">
+            <option value="all">Все категории</option>
+            <option value="Ручной завод">Ручной завод</option>
+            <option value="Автоматический механизм">Автоматический механизм</option>
+            <option value="Кварцевый механизм">Кварцевый механизм</option>
+          </select>
         </details>
       </aside>
 
       <section class="catalog-layout__products">
         <h2 class="catalog-layout__title" id="catalog-products-title">Модели часов</h2>
-
         <div class="catalog-toolbar">
-          <p id="catalog-count" role="status">Найдено моделей: 6</p>
-          <div><label for="catalog-sort">Сортировка</label><select class="catalog-filters__input" id="catalog-sort">
-              <option value="default">По коллекции</option>
-              <option value="asc">Сначала дешевле</option>
-              <option value="desc">Сначала дороже</option>
-              <option value="name">По названию</option>
-            </select></div>
+          <p class="catalog-count" aria-live="polite"></p>
+          <div>
+            <label for="sort-select">Сортировка</label>
+            <select class="catalog-filters__input" id="sort-select">
+              <option value="default">По умолчанию</option>
+              <option value="price-asc">Сначала дешевле</option>
+              <option value="price-desc">Сначала дороже</option>
+              <option value="title-asc">По названию А-Я</option>
+            </select>
+          </div>
         </div>
-        <p id="catalog-empty" hidden>Модели не найдены. Измените фильтры или нажмите «Сбросить».</p>
-        <div class="products-grid">
-          <article class="product-card" data-product-id="1">
-            <div class="watch-gallery" data-gallery="1" role="group" aria-roledescription="карусель"
-              aria-label="Ракурсы NOIR Archive 01">
-              <img class="product-card__image" src="images/archive-1-front-640.png"
-                srcset="images/archive-1-front-320.png 320w, images/archive-1-front-640.png 640w"
-                sizes="(min-width: 900px) 480px, calc(100vw - 64px)"
-                alt="NOIR Archive 01 — вид спереди, студийная визуализация" width="640" height="640" loading="lazy">
-              <div class="watch-gallery__controls"><button class="watch-gallery__arrow" type="button" data-step="-1"
-                  aria-label="Предыдущий ракурс"><svg class="watch-gallery__icon" aria-hidden="true" focusable="false"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m15 18-6-6 6-6" />
-                  </svg>
-                </button>
-                <span class="watch-gallery__status" aria-live="polite" aria-atomic="true">Спереди · 1 / 3</span>
-                <button class="watch-gallery__arrow" type="button" data-step="1" aria-label="Следующий ракурс"><svg
-                    class="watch-gallery__icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m9 18 6-6-6-6" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <h3 class="product-card__title">
-              <a href="product.html?product=1">NOIR Archive 01</a>
-            </h3>
-
-            <p class="product-card__description">Ручной завод · чёрный циферблат</p>
-            <p class="product-card__price">68 500 ₽</p>
-
-            <div class="product-card__actions">
-              <a class="product-card__details" href="product.html?product=1">
-                Подробнее
-              </a>
-              <button class="button button--primary product-card__button" type="button" data-product="NOIR Archive 01">
-                Заказать
-              </button>
-            </div>
-          </article>
-
-          <article class="product-card" data-product-id="2">
-            <div class="watch-gallery" data-gallery="2" role="group" aria-roledescription="карусель"
-              aria-label="Ракурсы NOIR Archive 02">
-              <img class="product-card__image" src="images/archive-2-front-640.png"
-                srcset="images/archive-2-front-320.png 320w, images/archive-2-front-640.png 640w"
-                sizes="(min-width: 900px) 480px, calc(100vw - 64px)"
-                alt="NOIR Archive 02 — вид спереди, студийная визуализация" width="640" height="640" loading="lazy">
-              <div class="watch-gallery__controls"><button class="watch-gallery__arrow" type="button" data-step="-1"
-                  aria-label="Предыдущий ракурс"><svg class="watch-gallery__icon" aria-hidden="true" focusable="false"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m15 18-6-6 6-6" />
-                  </svg>
-                </button>
-                <span class="watch-gallery__status" aria-live="polite" aria-atomic="true">Спереди · 1 / 3</span>
-                <button class="watch-gallery__arrow" type="button" data-step="1" aria-label="Следующий ракурс"><svg
-                    class="watch-gallery__icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m9 18 6-6-6-6" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <h3 class="product-card__title">
-              <a href="product.html?product=2">NOIR Archive 02</a>
-            </h3>
-
-            <p class="product-card__description">Автоматический механизм · серебристый циферблат</p>
-            <p class="product-card__price">84 900 ₽</p>
-
-            <div class="product-card__actions">
-              <a class="product-card__details" href="product.html?product=2">
-                Подробнее
-              </a>
-              <button class="button button--primary product-card__button" type="button" data-product="NOIR Archive 02">
-                Заказать
-              </button>
-            </div>
-          </article>
-
-          <article class="product-card" data-product-id="3">
-            <div class="watch-gallery" data-gallery="3" role="group" aria-roledescription="карусель"
-              aria-label="Ракурсы NOIR Archive 03">
-              <img class="product-card__image" src="images/archive-3-front-640.png"
-                srcset="images/archive-3-front-320.png 320w, images/archive-3-front-640.png 640w"
-                sizes="(min-width: 900px) 480px, calc(100vw - 64px)"
-                alt="NOIR Archive 03 — вид спереди, студийная визуализация" width="640" height="640" loading="lazy">
-              <div class="watch-gallery__controls"><button class="watch-gallery__arrow" type="button" data-step="-1"
-                  aria-label="Предыдущий ракурс"><svg class="watch-gallery__icon" aria-hidden="true" focusable="false"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m15 18-6-6 6-6" />
-                  </svg>
-                </button>
-                <span class="watch-gallery__status" aria-live="polite" aria-atomic="true">Спереди · 1 / 3</span>
-                <button class="watch-gallery__arrow" type="button" data-step="1" aria-label="Следующий ракурс"><svg
-                    class="watch-gallery__icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m9 18 6-6-6-6" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <h3 class="product-card__title">
-              <a href="product.html?product=3">NOIR Archive 03</a>
-            </h3>
-
-            <p class="product-card__description">Кварцевый механизм · белый циферблат</p>
-            <p class="product-card__price">52 000 ₽</p>
-
-            <div class="product-card__actions">
-              <a class="product-card__details" href="product.html?product=3">
-                Подробнее
-              </a>
-              <button class="button button--primary product-card__button" type="button" data-product="NOIR Archive 03">
-                Заказать
-              </button>
-            </div>
-          </article>
-
-          <article class="product-card" data-product-id="4">
-            <div class="watch-gallery" data-gallery="4" role="group" aria-roledescription="карусель"
-              aria-label="Ракурсы NOIR Archive 04">
-              <img class="product-card__image" src="images/archive-4-front-640.png"
-                srcset="images/archive-4-front-320.png 320w, images/archive-4-front-640.png 640w"
-                sizes="(min-width: 900px) 480px, calc(100vw - 64px)"
-                alt="NOIR Archive 04 — вид спереди, студийная визуализация" width="640" height="640" loading="lazy">
-              <div class="watch-gallery__controls"><button class="watch-gallery__arrow" type="button" data-step="-1"
-                  aria-label="Предыдущий ракурс"><svg class="watch-gallery__icon" aria-hidden="true" focusable="false"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m15 18-6-6 6-6" />
-                  </svg>
-                </button>
-                <span class="watch-gallery__status" aria-live="polite" aria-atomic="true">Спереди · 1 / 3</span>
-                <button class="watch-gallery__arrow" type="button" data-step="1" aria-label="Следующий ракурс"><svg
-                    class="watch-gallery__icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m9 18 6-6-6-6" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <h3 class="product-card__title">
-              <a href="product.html?product=4">NOIR Archive 04</a>
-            </h3>
-
-            <p class="product-card__description">Автоматический механизм · чёрный циферблат</p>
-            <p class="product-card__price">96 000 ₽</p>
-
-            <div class="product-card__actions">
-              <a class="product-card__details" href="product.html?product=4">
-                Подробнее
-              </a>
-              <button class="button button--primary product-card__button" type="button" data-product="NOIR Archive 04">
-                Заказать
-              </button>
-            </div>
-          </article>
-
-          <article class="product-card" data-product-id="5">
-            <div class="watch-gallery" data-gallery="5" role="group" aria-roledescription="карусель"
-              aria-label="Ракурсы NOIR Archive 05">
-              <img class="product-card__image" src="images/archive-5-front-640.png"
-                srcset="images/archive-5-front-320.png 320w, images/archive-5-front-640.png 640w"
-                sizes="(min-width: 900px) 480px, calc(100vw - 64px)"
-                alt="NOIR Archive 05 — вид спереди, студийная визуализация" width="640" height="640" loading="lazy">
-              <div class="watch-gallery__controls"><button class="watch-gallery__arrow" type="button" data-step="-1"
-                  aria-label="Предыдущий ракурс"><svg class="watch-gallery__icon" aria-hidden="true" focusable="false"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m15 18-6-6 6-6" />
-                  </svg>
-                </button>
-                <span class="watch-gallery__status" aria-live="polite" aria-atomic="true">Спереди · 1 / 3</span>
-                <button class="watch-gallery__arrow" type="button" data-step="1" aria-label="Следующий ракурс"><svg
-                    class="watch-gallery__icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m9 18 6-6-6-6" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <h3 class="product-card__title">
-              <a href="product.html?product=5">NOIR Archive 05</a>
-            </h3>
-
-            <p class="product-card__description">Ручной завод · серебристый циферблат</p>
-            <p class="product-card__price">73 500 ₽</p>
-
-            <div class="product-card__actions">
-              <a class="product-card__details" href="product.html?product=5">
-                Подробнее
-              </a>
-              <button class="button button--primary product-card__button" type="button" data-product="NOIR Archive 05">
-                Заказать
-              </button>
-            </div>
-          </article>
-
-          <article class="product-card" data-product-id="6">
-            <div class="watch-gallery" data-gallery="6" role="group" aria-roledescription="карусель"
-              aria-label="Ракурсы NOIR Archive 06">
-              <img class="product-card__image" src="images/archive-6-front-640.png"
-                srcset="images/archive-6-front-320.png 320w, images/archive-6-front-640.png 640w"
-                sizes="(min-width: 900px) 480px, calc(100vw - 64px)"
-                alt="NOIR Archive 06 — вид спереди, студийная визуализация" width="640" height="640" loading="lazy">
-              <div class="watch-gallery__controls"><button class="watch-gallery__arrow" type="button" data-step="-1"
-                  aria-label="Предыдущий ракурс"><svg class="watch-gallery__icon" aria-hidden="true" focusable="false"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m15 18-6-6 6-6" />
-                  </svg>
-                </button>
-                <span class="watch-gallery__status" aria-live="polite" aria-atomic="true">Спереди · 1 / 3</span>
-                <button class="watch-gallery__arrow" type="button" data-step="1" aria-label="Следующий ракурс"><svg
-                    class="watch-gallery__icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m9 18 6-6-6-6" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <h3 class="product-card__title">
-              <a href="product.html?product=6">NOIR Archive 06</a>
-            </h3>
-
-            <p class="product-card__description">Кварцевый механизм · белый циферблат</p>
-            <p class="product-card__price">45 000 ₽</p>
-
-            <div class="product-card__actions">
-              <a class="product-card__details" href="product.html?product=6">
-                Подробнее
-              </a>
-              <button class="button button--primary product-card__button" type="button" data-product="NOIR Archive 06">
-                Заказать
-              </button>
-            </div>
-          </article>
-        </div>
+        <p class="catalog-empty" hidden>По выбранным условиям товары не найдены.</p>
+        <div class="products-grid" data-products-container></div>
       </section>
     </section>
+    <template id="catalog-gallery">
+      <div class="watch-gallery" role="group" aria-roledescription="карусель">
+        <img class="product-card__image" sizes="(min-width: 900px) 480px, calc(100vw - 64px)"
+          alt="" width="640" height="640" loading="lazy">
+        <div class="watch-gallery__controls"><button class="watch-gallery__arrow" type="button" data-step="-1"
+            aria-label="Предыдущий ракурс"><svg class="watch-gallery__icon" aria-hidden="true" focusable="false"
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <span class="watch-gallery__status" aria-live="polite" aria-atomic="true">Спереди · 1 / 3</span>
+          <button class="watch-gallery__arrow" type="button" data-step="1" aria-label="Следующий ракурс"><svg
+              class="watch-gallery__icon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"
+              width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </template>
   </main>
   <footer class="site-footer">
     <div class="site-footer__inner">
