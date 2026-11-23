@@ -233,11 +233,13 @@ Hero-блок — первый крупный блок страницы.
 }
 
 .product-output {
-  padding: 16px;
-  overflow-x: auto;
-  color: #f9fafb;
-  background-color: #111827;
-  border-radius: 8px;
+  padding: var(--space-md);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  font: inherit;
+  white-space: pre-wrap;
 }
 
 /* Сетка карточек с тремя равными колонками. */
@@ -1165,7 +1167,7 @@ textarea::placeholder {
 }
 
 .catalog-filters {
-  border-radius: 0;
+  border-radius: var(--radius-card);
   padding: 20px;
 }
 
@@ -1176,7 +1178,7 @@ textarea::placeholder {
 }
 
 .catalog-filters__group {
-  border-radius: 0;
+  border-radius: var(--radius-button);
   padding: 12px;
 }
 
@@ -1197,6 +1199,10 @@ textarea::placeholder {
 
 .catalog-filters__input {
   margin-block: 6px;
+}
+
+.catalog-filters .catalog-filters__input {
+  border-radius: var(--radius-button);
 }
 
 .catalog-toolbar {
@@ -1393,7 +1399,8 @@ textarea::placeholder {
 }
 
 .button,
-.site-nav__link {
+.site-nav__link,
+.back-to-top {
   border-radius: var(--radius-button);
 }
 

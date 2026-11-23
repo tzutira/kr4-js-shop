@@ -345,7 +345,7 @@ console.log(getProductStatus(product));
 function createProductSummary(product) {
   const finalPrice = calculateFinalPrice(product.price, product.discountPercent);
   const status = getProductStatus(product);
-  return `${product.title}: ${formatPrice(finalPrice)}. Статус: ${status}.`;
+  return `${product.title}: ${formatPrice(finalPrice)} · ${status}`;
 }
 const productSummary = createProductSummary(product);
 console.log(productSummary);
@@ -353,7 +353,7 @@ console.log(productSummary);
 const messageElement = document.querySelector('.js-message');
 const productOutputElement = document.querySelector('.product-output');
 if (messageElement) {
-  messageElement.textContent = 'JavaScript подключён корректно.';
+  messageElement.textContent = 'Итоговая цена с учебной скидкой:';
 }
 if (productOutputElement) {
   productOutputElement.textContent = productSummary;
