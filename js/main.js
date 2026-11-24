@@ -11,13 +11,9 @@ if (productTitle) {
   price.classList.toggle('product-detail__price--discount', selectedWatch.badge === 'Скидка');
   document.getElementById('product-color').textContent = selectedWatch.color;
   document.getElementById('product-category').textContent = selectedWatch.category;
-  const image = document.getElementById('product-image');
-  image.src = `images/archive-${selectedWatch.id}-front-640.png`;
-  image.srcset = `images/archive-${selectedWatch.id}-front-320.png 320w, images/archive-${selectedWatch.id}-front-640.png 640w`;
-  image.closest("[data-gallery]").dataset.gallery = selectedWatch.id;
-  image.closest("[data-gallery]").setAttribute("aria-label", `Ракурсы ${selectedWatch.name}`);
+  const gallery = document.getElementById('product-image').closest('[data-gallery]');
+  setWatchImage(gallery, findProductById(products, Number(selectedWatch.id)));
   document.querySelectorAll("[data-spec]").forEach(el => el.textContent = selectedWatch[el.dataset.spec]);
-  image.alt = `${selectedWatch.name} — вид спереди, студийная визуализация`;
   document.getElementById('product-order-button').dataset.product = selectedWatch.name;
 }
 
@@ -160,15 +156,26 @@ if (menuButton && navigation) {
 // Ручные карусели: без таймера, жестов с блокировкой вертикальной прокрутки и скрытых ссылок.
 const angleNames = ['Спереди', 'Сбоку', 'Сзади'];
 const angleFiles = ['front', 'side', 'back'];
+function setWatchImageSource(image, src) {
+  image.srcset = `${src.replace('-640.png', '-320.png')} 320w, ${src} 640w`;
+  image.src = src;
+}
+
+function setWatchImage(gallery, product) {
+  gallery.dataset.gallery = String(product.id);
+  gallery.setAttribute('aria-label', `Ракурсы ${product.title}`);
+  const image = gallery.querySelector('img');
+  image.alt = `${product.title} — вид спереди, студийная визуализация`;
+  setWatchImageSource(image, product.image);
+}
+
 function initWatchGallery(gallery) {
   const id = gallery.dataset.gallery;
   const image = gallery.querySelector('img');
   let index = 0;
   function show(next) {
     index = (next + 3) % 3;
-    const base = `images/archive-${id}-${angleFiles[index]}`;
-    image.src = `${base}-640.png`;
-    image.srcset = `${base}-320.png 320w, ${base}-640.png 640w`;
+    setWatchImageSource(image, `images/archive-${id}-${angleFiles[index]}-640.png`);
     image.alt = `${watchProducts[id].name} — вид ${angleNames[index].toLowerCase()}, студийная визуализация`;
     gallery.querySelector('.watch-gallery__status').textContent = `${angleNames[index]} · ${index + 1} / 3`;
   }
@@ -249,6 +256,11 @@ console.table(sortProductsByPrice(practice16Products, 'desc'));
 function findProductById(products, id) {
   return products.find((product) => product.id === id);
 }
+
+function formatPrice(price) {
+  return `${price.toLocaleString('ru-RU')} руб.`;
+}
+
 const selectedProduct = findProductById(practice16Products, 3);
 if (selectedProduct) {
   console.log(`Найден товар: ${selectedProduct.title}`);

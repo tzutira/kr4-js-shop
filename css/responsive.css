@@ -134,10 +134,21 @@ img {
 }
 .product-card { min-width: 0; }
 .product-card__actions { gap: 12px; }
-.product-card__button, .product-card__details {
+.product-card__button {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
+}
+
+@media (min-width: 48rem) {
+  .cart-item {
+    grid-template-columns: clamp(4rem, 20%, 15rem) minmax(0, 1fr) max-content;
+  }
+
+  .cart-item__actions {
+    grid-column: 3;
+    align-self: end;
+  }
 }
 .catalog-layout {
   display: grid;
